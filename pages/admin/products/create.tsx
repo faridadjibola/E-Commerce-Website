@@ -11,6 +11,7 @@ const CreateProduct: NextPage = () => {
   const { data: session } = useSession()
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     if (!session) return
     if (session.user?.email !== 'admin@tochiwears.ng') router.push('/auth/signin')
   }, [session])
