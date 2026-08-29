@@ -23,7 +23,7 @@ const SignIn: NextPage = () => {
     <div className="max-w-md mx-auto">
       <div className="border rounded-2xl p-6 shadow-sm bg-white">
         <div className="mb-6 text-center">
-          <img src="/logo.svg" alt="Tochiwears main logo" className="mx-auto h-10 w-auto" />
+          <img src="/tochiwears logo.jpeg" alt="Tochiwears main logo" className="mx-auto h-10 w-auto" />
           <h1 className="mt-4 text-2xl font-semibold">Welcome back</h1>
           <p className="mt-1 text-sm text-gray-600">Sign in to continue your shopping</p>
         </div>

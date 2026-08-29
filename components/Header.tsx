@@ -24,7 +24,7 @@ const Header = () => {
       <div className="container mx-auto px-6 py-3 flex items-center justify-between gap-4">
         <div className="flex items-center">
           <Link href="/" className="flex items-center gap-3 group" aria-label="Tochiwears home">
-            <img src="/logo.svg" alt="Tochiwears main logo" className="h-9 w-auto transition-transform group-hover:scale-[1.02]" />
+            <img src="/tochiwears logo.jpeg" alt="Tochiwears main logo" className="h-9 w-auto transition-transform group-hover:scale-[1.02]" />
           </Link>
         </div>
 

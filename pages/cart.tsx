@@ -25,7 +25,7 @@ const Cart: NextPage = () => {
             const p = products.find(pp => pp.id === it.productId)
             return (
               <div key={it.productId} className="border rounded p-4 flex items-center gap-4">
-                <img src={p?.images?.[0] || '/logo.svg'} className="w-20 h-20 object-cover rounded" />
+                <img src={p?.images?.[0] || '/tochiwears logo.jpeg'} className="w-20 h-20 object-cover rounded" />
                 <div className="flex-1">
                   <div className="font-medium">{p?.name || 'Product'}</div>
                   <div className="text-sm text-gray-600">₦{((p?.discount ?? p?.price) ?? 0).toLocaleString()}</div>
