@@ -32,10 +32,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     return res.status(201).json(order)
   }
 
-  if (req.method === 'GET') {
-    return res.json(listOrders())
-  }
-
-  res.setHeader('Allow', 'GET,POST')
+  res.setHeader('Allow', 'POST')
   res.status(405).end()
 }
