@@ -1,0 +1,247 @@
+openapi: 3.0.3
+info:
+  title: Tochiwears Public API (frontend contract)
+  version: '1.0.0'
+  description: API spec for frontend-backend integration (products, auth, cart, orders, payments)
+servers:
+  - url: /
+paths:
+  /api/products:
+    get:
+      summary: List products
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+  /api/products/{slug}:
+    get:
+      summary: Get single product by slug
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+  /api/auth/register:
+    post:
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name: { type: string }
+                email: { type: string }
+                password: { type: string }
+      responses:
+        '200': { description: Created }
+  /api/cart:
+    get:
+      summary: Get cart for session/user
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CartItem'
+    post:
+      summary: Add item to cart
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                productId: { type: string }
+                quantity: { type: integer }
+      responses:
+        '200': { description: OK }
+    delete:
+      summary: Remove item from cart
+      parameters:
+        - name: productId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200': { description: OK }
+  /api/orders:
+    post:
+      summary: Create order
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrderRequest'
+      responses:
+        '201':
+          description: Created
+  /api/orders/{id}:
+    get:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200': { description: OK }
+  /api/payments/paystack/initiate:
+    post:
+      summary: Initialize Paystack payment (returns authorization URL)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                amount: { type: number }
+                email: { type: string }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  reference: { type: string }
+                  authorization_url: { type: string }
+    /api/payments/moniepoint/initiate:
+      post:
+        summary: Initialize Moniepoint payment (returns authorization URL)
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  amount: { type: number }
+                  email: { type: string }
+        responses:
+          '200':
+            description: OK
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/PaymentInit'
+    /api/payments/bank/initiate:
+      post:
+        summary: Create bank transfer instructions (account details)
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  amount: { type: number }
+                  email: { type: string }
+        responses:
+          '200':
+            description: OK
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/BankTransfer'
+    /api/payments/card/initiate:
+      post:
+        summary: Initialize card payment flow (3DS or redirect)
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  amount: { type: number }
+                  email: { type: string }
+        responses:
+          '200':
+            description: OK
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/PaymentInit'
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        id: { type: string }
+        name: { type: string }
+        slug: { type: string }
+        price: { type: number }
+        discount: { type: number }
+        rating: { type: number }
+        category: { type: string }
+        gender: { type: string }
+        images:
+          type: array
+          items: { type: string }
+        sku: { type: string }
+        stock: { type: number }
+        description: { type: string }
+    CartItem:
+      type: object
+      properties:
+        productId: { type: string }
+        quantity: { type: integer }
+    CreateOrderRequest:
+      type: object
+      properties:
+        userId: { type: string }
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              productId: { type: string }
+              quantity: { type: integer }
+        address:
+          type: object
+          properties:
+            fullName: { type: string }
+            phone: { type: string }
+            addressLine: { type: string }
+            city: { type: string }
+            state: { type: string }
+            country: { type: string }
+        payment:
+          type: object
+          properties:
+            method: { type: string }
+
+    PaymentInit:
+      type: object
+      properties:
+        reference: { type: string }
+        authorization_url: { type: string }
+
+    BankTransfer:
+      type: object
+      properties:
+        reference: { type: string }
+        account_number: { type: string }
+        account_name: { type: string }
+        bank_name: { type: string }

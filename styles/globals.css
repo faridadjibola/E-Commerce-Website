@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body, #__next {
+  height: 100%;
+}
+
+body {
+  @apply bg-white text-gray-800 antialiased;
+}
+
+/* Simple skeleton loader */
+.skeleton {
+  @apply animate-pulse bg-gray-200 rounded;
+}
