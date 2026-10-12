@@ -2,12 +2,40 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  font-size: 15px;
+}
+
 html, body, #__next {
   height: 100%;
 }
 
 body {
   @apply bg-white text-gray-800 antialiased;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+.site-drawer {
+  transition: transform 250ms ease;
+}
+
+.site-drawer-overlay {
+  transition: opacity 250ms ease;
+}
+
+@media (max-width: 767px) {
+  .site-header-inner {
+    padding-left: max(0.75rem, env(safe-area-inset-left));
+    padding-right: max(0.75rem, env(safe-area-inset-right));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-drawer,
+  .site-drawer-overlay {
+    transition-duration: 0.01ms;
+  }
 }
 
 /* Simple skeleton loader */

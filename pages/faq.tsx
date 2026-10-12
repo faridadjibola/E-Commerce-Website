@@ -1,9 +1,9 @@
 import { NextPage } from 'next'
 
 const faqs = [
-  { q: 'How long does delivery take?', a: 'Delivery usually takes 3–7 business days within Nigeria, depending on your location.' },
-  { q: 'Can I return an item?', a: 'Yes, eligible items can be returned within 7 days of delivery if they are unused and in original packaging.' },
-  { q: 'Do you offer cash on delivery?', a: 'We support a variety of payment methods including bank transfer, card, and selected mobile payment methods.' },
+  { q: 'How long does delivery take?', a: 'Delivery usually takes 3–7 business days within Nigeria, depending on your location and selected courier service.' },
+  { q: 'Can I return an item?', a: 'Yes, eligible items can be returned within 7 days of delivery if they are unused and in their original packaging.' },
+  { q: 'Do you offer cash on delivery?', a: 'Selected areas may support cash on delivery, while other orders can be paid through bank transfer, card, or mobile payment options.' },
   { q: 'Do you ship outside Nigeria?', a: 'Currently, we focus on local delivery within Nigeria. International shipping may be available later.' },
 ]
 

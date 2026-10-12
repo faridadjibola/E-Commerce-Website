@@ -1,22 +1,32 @@
 /// <reference types="react" />
 import React, { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/router'
+import PageMeta from '../components/PageMeta'
 import ProductCard from '../components/ProductCard'
 import { getAllProducts } from '../lib/products'
 
 const Shop: React.FC = () => {
   const router = useRouter()
-  const q = typeof router.query.q === 'string' ? router.query.q.toLowerCase().trim() : ''
+  const initialQuery = typeof router.query.search === 'string'
+    ? router.query.search
+    : typeof router.query.q === 'string'
+      ? router.query.q
+      : ''
   const categoryParam = typeof router.query.category === 'string' ? router.query.category : 'all'
-  const [searchTerm, setSearchTerm] = useState(q)
+  const [searchTerm, setSearchTerm] = useState(initialQuery.trim())
   const [selectedCategory, setSelectedCategory] = useState(categoryParam)
   const [selectedGender, setSelectedGender] = useState('all')
   const [inStockOnly, setInStockOnly] = useState(false)
   const [sortBy, setSortBy] = useState('featured')
 
   useEffect(() => {
-    setSearchTerm(q)
-  }, [q])
+    const nextQuery = typeof router.query.search === 'string'
+      ? router.query.search
+      : typeof router.query.q === 'string'
+        ? router.query.q
+        : ''
+    setSearchTerm(nextQuery.trim())
+  }, [router.query.search, router.query.q])
 
   useEffect(() => {
     setSelectedCategory(categoryParam)
@@ -28,24 +38,17 @@ const Shop: React.FC = () => {
   }, [])
 
   const products = useMemo(() => {
+    const normalizedQuery = searchTerm.trim().toLocaleLowerCase()
     const allProducts = getAllProducts()
 
     const filtered = allProducts.filter((product) => {
       const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory
       const matchesGender = selectedGender === 'all' || product.gender === selectedGender || product.gender === 'unisex'
       const matchesStock = !inStockOnly || product.stock > 0
-      const haystack = [
-        product.name,
-        product.category,
-        product.gender,
-        product.description,
-        product.sku,
-        product.slug,
-      ]
+      const searchableText = [product.name, product.category, product.gender, product.description, product.sku, product.slug]
         .join(' ')
-        .toLowerCase()
-      const matchesQuery = !searchTerm || haystack.includes(searchTerm.toLowerCase())
-
+        .toLocaleLowerCase()
+      const matchesQuery = !normalizedQuery || searchableText.includes(normalizedQuery)
       return matchesCategory && matchesGender && matchesStock && matchesQuery
     })
 
@@ -61,15 +64,9 @@ const Shop: React.FC = () => {
 
   const applyFilters = (nextSearch: string, nextCategory: string) => {
     const query: Record<string, string> = {}
-
-    if (nextSearch.trim()) {
-      query.q = nextSearch.trim()
-    }
-
-    if (nextCategory !== 'all') {
-      query.category = nextCategory
-    }
-
+    const normalizedSearch = nextSearch.trim()
+    if (normalizedSearch) query.search = normalizedSearch
+    if (nextCategory !== 'all') query.category = nextCategory
     router.push({ pathname: '/shop', query }, undefined, { shallow: true })
   }
 
@@ -84,20 +81,28 @@ const Shop: React.FC = () => {
 
   return (
     <div>
-      <div className="mb-6 flex items-center justify-between gap-4 flex-wrap">
-        <h1 className="text-2xl font-semibold">Shop</h1>
-        {(q || selectedCategory !== 'all') && (
-          <div className="text-sm text-gray-600">
-            Showing results for <span className="font-medium text-gray-900">“{q || selectedCategory}”</span>
-          </div>
-        )}
+      <PageMeta title="Shop All Accessories" description="Browse Tochiwears jewelry, watches, belts, glasses, and other modern accessories." canonicalPath="/shop" />
+      <div className="space-y-6">
+        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-gray-200 pb-5">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-500">Collection</p>
+          <h1 className="mt-1 text-3xl font-semibold text-gray-900">Shop</h1>
+        </div>
+        <p className="text-sm text-gray-600">Showing {products.length} product{products.length === 1 ? '' : 's'}</p>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-6">
-        <aside className="w-full md:w-72 border rounded-xl p-4 bg-gray-50">
+      {searchTerm.trim() && (
+        <div className="rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-700">
+          Showing results for <span className="font-medium text-gray-950">“{searchTerm.trim()}”</span>
+        </div>
+      )}
+
+      <div className="flex flex-col gap-6 md:flex-row">
+        <aside className="w-full shrink-0 rounded-xl border border-gray-200 bg-white p-4 shadow-sm md:w-72 md:bg-gray-50">
           <div className="mb-4">
-            <h4 className="font-semibold mb-2">Search</h4>
+            <label htmlFor="shop-search" className="mb-2 block font-medium text-gray-900">Search</label>
             <input
+              id="shop-search"
               type="search"
               value={searchTerm}
               onChange={(event) => {
@@ -106,12 +111,12 @@ const Shop: React.FC = () => {
                 applyFilters(value, selectedCategory)
               }}
               placeholder="Search products..."
-              className="w-full border rounded-lg px-3 py-2 text-sm outline-none focus:border-gray-400 bg-white"
+              className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm outline-none transition focus:border-gray-400 focus:ring-2 focus:ring-gray-100"
             />
           </div>
 
           <div className="mb-4">
-            <h4 className="font-semibold mb-2">Categories</h4>
+            <h4 className="mb-2 font-semibold text-gray-900">Categories</h4>
             <div className="flex flex-wrap gap-2">
               {categories.map((category) => {
                 const isActive = selectedCategory === category
@@ -120,13 +125,10 @@ const Shop: React.FC = () => {
                     key={category}
                     type="button"
                     onClick={() => {
-                      const nextCategory = category
-                      setSelectedCategory(nextCategory)
-                      applyFilters(searchTerm, nextCategory)
+                      setSelectedCategory(category)
+                      applyFilters(searchTerm, category)
                     }}
-                    className={`rounded-full border px-3 py-1.5 text-xs font-medium transition ${
-                      isActive ? 'bg-black text-white border-black' : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-100'
-                    }`}
+                    className={`rounded-full border px-3 py-1.5 text-xs font-medium transition ${isActive ? 'border-black bg-black text-white' : 'border-gray-200 bg-white text-gray-700 hover:bg-gray-100'}`}
                   >
                     {category === 'all' ? 'All' : category}
                   </button>
@@ -138,7 +140,7 @@ const Shop: React.FC = () => {
           <div className="space-y-4 text-sm text-gray-700">
             <div>
               <label htmlFor="gender" className="mb-2 block font-medium text-gray-900">Collection</label>
-              <select id="gender" value={selectedGender} onChange={(event) => setSelectedGender(event.target.value)} className="w-full rounded-lg border bg-white px-3 py-2">
+              <select id="gender" value={selectedGender} onChange={(event) => setSelectedGender(event.target.value)} className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 outline-none focus:border-gray-400">
                 <option value="all">All collections</option>
                 <option value="men">Men</option>
                 <option value="women">Women</option>
@@ -146,47 +148,40 @@ const Shop: React.FC = () => {
               </select>
             </div>
             <label className="flex cursor-pointer items-center gap-2">
-              <input type="checkbox" checked={inStockOnly} onChange={(event) => setInStockOnly(event.target.checked)} className="h-4 w-4" />
+              <input type="checkbox" checked={inStockOnly} onChange={(event) => setInStockOnly(event.target.checked)} className="h-4 w-4 rounded border-gray-300 text-gray-900 focus:ring-gray-900" />
               In stock only
             </label>
           </div>
 
-          <button
-            type="button"
-            onClick={clearFilters}
-            className="mt-4 w-full border border-gray-200 bg-white rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
-          >
+          <button type="button" onClick={clearFilters} className="mt-4 w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-100">
             Clear filters
           </button>
         </aside>
 
-        <div className="flex-1">
-          <div className="mb-4 flex items-center justify-between">
-            <div>Showing {products.length} products</div>
-            <div>
-              <label htmlFor="sort" className="sr-only">Sort products</label>
-              <select id="sort" value={sortBy} onChange={(event) => setSortBy(event.target.value)} className="border px-2 py-1 rounded">
-                <option value="featured">Featured</option>
-                <option value="rating">Top rated</option>
-                <option value="price-asc">Price: Low to High</option>
-                <option value="price-desc">Price: High to Low</option>
-              </select>
-            </div>
+        <div className="min-w-0 flex-1">
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+            <p className="text-sm text-gray-600">Plain-text catalog results, sorted by your selection.</p>
+            <label htmlFor="sort" className="sr-only">Sort products</label>
+            <select id="sort" value={sortBy} onChange={(event) => setSortBy(event.target.value)} className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm outline-none focus:border-gray-400">
+              <option value="featured">Featured</option>
+              <option value="rating">Top rated</option>
+              <option value="price-asc">Price: Low to High</option>
+              <option value="price-desc">Price: High to Low</option>
+            </select>
           </div>
 
           {products.length === 0 ? (
-            <div className="rounded border border-dashed bg-gray-50 p-8 text-center text-sm text-gray-600">
-              No products match your search. Try a different keyword like belt, watch, jewelry, glasses, or men.
+            <div className="rounded-xl border border-dashed border-gray-300 bg-gray-50 px-5 py-12 text-center text-sm text-gray-600">
+              No products found. Try a different keyword, category, or clear the current filters.
             </div>
           ) : (
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {products.map((p) => (
-                <ProductCard key={p.id} product={p} />
-              ))}
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
+              {products.map((product) => <ProductCard key={product.id} product={product} />)}
             </div>
           )}
         </div>
       </div>
+    </div>
     </div>
   )
 }

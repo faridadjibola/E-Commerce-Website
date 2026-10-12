@@ -35,6 +35,7 @@ Create a `.env.local` file for local configuration when needed:
 NEXTAUTH_SECRET=replace-with-a-local-secret
 ADMIN_EMAIL=admin@tochiwears.ng
 NEXT_PUBLIC_API_BASE=
+BLOB_READ_WRITE_TOKEN=your-vercel-blob-token
 ```
 
 Start the development server:
@@ -53,6 +54,16 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 | `npm run build` | Create a production build |
 | `npm run start` | Start the production server |
 | `npm run lint` | Run Next.js lint checks |
+| `npm run check:images` | Validate local photos for the 24 catalog additions |
+| `npm run seed:products` | Upsert the 24 products into the local JSON catalog |
+
+### Product catalog and images
+
+The current app has no database. Seeded products are persisted in `lib/seeded-products.json`; run `npm run seed:products` after editing `scripts/products.seed.json`. The script refuses to run with `NODE_ENV=production` unless `--allow-prod` is explicitly passed. Missing photos use `/products/placeholder.svg` until a valid local primary image is uploaded.
+
+See [`public/products/README.md`](public/products/README.md) for all expected photo paths and validation limits. The existing product list still contains legacy Unsplash images, so `images.unsplash.com` remains configured in `next.config.js`; the 24 new seed records use local paths only.
+
+Admin image uploads are stored in Vercel Blob, not the deployment filesystem. Configure `BLOB_READ_WRITE_TOKEN` in `.env.local` for local admin uploads and in deployment secrets for production. Uploads are checked by file signature, capped at 2 MB, and must be at least 800 x 800 pixels.
 
 ## Project Structure
 

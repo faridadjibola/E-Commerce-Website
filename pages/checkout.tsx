@@ -1,10 +1,10 @@
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
-import { useSession } from 'next-auth/react'
 import api from '../lib/api'
 import { getAllProducts } from '../lib/products'
 import { useCart } from '../components/CartProvider'
+import { useAuth } from '../components/AuthProvider'
 
 const DELIVERY_OPTIONS = [
   { id: 'lagos', name: 'Lagos', price: 2000 },
@@ -23,13 +23,13 @@ const DELIVERY_OPTIONS = [
 
 const Checkout: NextPage = () => {
   const router = useRouter()
-  const { data: session } = useSession()
+  const { user, loading: authLoading } = useAuth()
   const { items, clearCart, subtotal } = useCart()
   const products = getAllProducts()
 
   const [method, setMethod] = useState<'opay' | 'moniepoint' | 'bank' | 'card'>('opay')
   const [fullName, setFullName] = useState('')
-  const [email, setEmail] = useState(session?.user?.email || '')
+  const [email, setEmail] = useState(user?.email || '')
   const [phone, setPhone] = useState('')
   const [addressLine, setAddressLine] = useState('')
   const [city, setCity] = useState('')
@@ -45,14 +45,20 @@ const Checkout: NextPage = () => {
   const total = subtotal + deliveryFee
 
   useEffect(() => {
-    if (session?.user?.email) setEmail(session.user.email)
-  }, [session])
+    if (user?.email) setEmail(user.email)
+  }, [user])
 
   useEffect(() => {
-    if (items.length === 0 && !status) {
+    if (!authLoading && !user) {
+      router.replace(`/auth/signin?callbackUrl=${encodeURIComponent(router.asPath)}`)
+    }
+  }, [authLoading, user, router])
+
+  useEffect(() => {
+    if (!authLoading && user && items.length === 0 && !status) {
       router.push('/cart')
     }
-  }, [items, router, status])
+  }, [authLoading, user, items, router, status])
 
   async function handlePay() {
     setError('')
@@ -70,7 +76,7 @@ const Checkout: NextPage = () => {
       setSubmitting(true)
       setStatus('Creating your order...')
       const order = await api.createOrder({
-        userId: session?.user?.email || 'guest',
+        userId: user?.id || user?.email || 'guest',
         items: items.map((item) => ({ productId: item.productId, quantity: item.quantity })),
         address: {
           fullName,
@@ -141,78 +147,174 @@ const Checkout: NextPage = () => {
     [items, products]
   )
 
+  if (authLoading || !user) return <p role="status" className="text-sm text-gray-600">Checking your sign-in...</p>
+
   return (
-    <div>
-      <h1 className="text-2xl font-semibold mb-4">Checkout</h1>
-      <div className="grid md:grid-cols-2 gap-6">
-        <form className="border rounded p-4 space-y-3" onSubmit={(e) => { e.preventDefault(); handlePay() }}>
-          <h3 className="font-semibold">Customer Information</h3>
-          <input aria-label="Full name" autoComplete="name" className="w-full border px-3 py-2 rounded" placeholder="Full name" value={fullName} onChange={(e) => setFullName(e.target.value)} />
-          <input aria-label="Email address" autoComplete="email" type="email" className="w-full border px-3 py-2 rounded" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-          <input aria-label="Phone number" autoComplete="tel" type="tel" className="w-full border px-3 py-2 rounded" placeholder="Phone" value={phone} onChange={(e) => setPhone(e.target.value)} />
-          <input aria-label="Delivery address" autoComplete="street-address" className="w-full border px-3 py-2 rounded" placeholder="Address" value={addressLine} onChange={(e) => setAddressLine(e.target.value)} />
-          <div className="grid md:grid-cols-2 gap-3">
-            <input aria-label="City" autoComplete="address-level2" className="w-full border px-3 py-2 rounded" placeholder="City" value={city} onChange={(e) => setCity(e.target.value)} />
-            <input aria-label="State" autoComplete="address-level1" className="w-full border px-3 py-2 rounded" placeholder="State" value={state} onChange={(e) => setState(e.target.value)} />
+    <div className="space-y-6">
+      <div className="flex items-center justify-between gap-3">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-500">Secure checkout</p>
+          <h1 className="mt-2 text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">Checkout</h1>
+        </div>
+        <div className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-700">
+          {items.length} item{items.length === 1 ? '' : 's'}
+        </div>
+      </div>
+
+      <div className="grid gap-6 lg:grid-cols-[1.4fr_0.9fr]">
+        <form className="space-y-5 rounded-[22px] border border-gray-200 bg-white p-4 shadow-sm sm:p-5" onSubmit={(e) => { e.preventDefault(); handlePay() }}>
+          <section className="space-y-4">
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900">Customer information</h3>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              <label className="block sm:col-span-2">
+                <span className="mb-2 block text-sm font-medium text-gray-700">Full name</span>
+                <input aria-label="Full name" autoComplete="name" className="w-full rounded-xl border border-gray-200 bg-gray-50 px-3 py-3 text-sm text-gray-900 outline-none transition focus:border-gray-400 focus:bg-white focus:ring-2 focus:ring-gray-200" placeholder="Full name" value={fullName} onChange={(e) => setFullName(e.target.value)} />
+              </label>
+
+              <label className="block sm:col-span-2">
+                <span className="mb-2 block text-sm font-medium text-gray-700">Email address</span>
+                <input aria-label="Email address" autoComplete="email" type="email" className="w-full rounded-xl border border-gray-200 bg-gray-50 px-3 py-3 text-sm text-gray-900 outline-none transition focus:border-gray-400 focus:bg-white focus:ring-2 focus:ring-gray-200" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+              </label>
+
+              <label className="block sm:col-span-2">
+                <span className="mb-2 block text-sm font-medium text-gray-700">Phone number</span>
+                <input aria-label="Phone number" autoComplete="tel" type="tel" className="w-full rounded-xl border border-gray-200 bg-gray-50 px-3 py-3 text-sm text-gray-900 outline-none transition focus:border-gray-400 focus:bg-white focus:ring-2 focus:ring-gray-200" placeholder="Phone" value={phone} onChange={(e) => setPhone(e.target.value)} />
+              </label>
+
+              <label className="block sm:col-span-2">
+                <span className="mb-2 block text-sm font-medium text-gray-700">Delivery address</span>
+                <input aria-label="Delivery address" autoComplete="street-address" className="w-full rounded-xl border border-gray-200 bg-gray-50 px-3 py-3 text-sm text-gray-900 outline-none transition focus:border-gray-400 focus:bg-white focus:ring-2 focus:ring-gray-200" placeholder="Address" value={addressLine} onChange={(e) => setAddressLine(e.target.value)} />
+              </label>
+
+              <label className="block">
+                <span className="mb-2 block text-sm font-medium text-gray-700">City</span>
+                <input aria-label="City" autoComplete="address-level2" className="w-full rounded-xl border border-gray-200 bg-gray-50 px-3 py-3 text-sm text-gray-900 outline-none transition focus:border-gray-400 focus:bg-white focus:ring-2 focus:ring-gray-200" placeholder="City" value={city} onChange={(e) => setCity(e.target.value)} />
+              </label>
+
+              <label className="block">
+                <span className="mb-2 block text-sm font-medium text-gray-700">State</span>
+                <input aria-label="State" autoComplete="address-level1" className="w-full rounded-xl border border-gray-200 bg-gray-50 px-3 py-3 text-sm text-gray-900 outline-none transition focus:border-gray-400 focus:bg-white focus:ring-2 focus:ring-gray-200" placeholder="State" value={state} onChange={(e) => setState(e.target.value)} />
+              </label>
+            </div>
+          </section>
+
+          <section className="space-y-3">
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900">Delivery location</h3>
+            </div>
+            <div className="grid gap-2 sm:grid-cols-2">
+              {DELIVERY_OPTIONS.map((option) => {
+                const isSelected = deliveryLocation === option.id
+                return (
+                  <button
+                    key={option.id}
+                    type="button"
+                    onClick={() => setDeliveryLocation(option.id)}
+                    className={`rounded-xl border px-3 py-3 text-left transition ${
+                      isSelected
+                        ? 'border-neutral-900 bg-neutral-900 text-white shadow-sm'
+                        : 'border-gray-200 bg-gray-50 text-gray-800 hover:border-gray-300 hover:bg-white'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between gap-3">
+                      <span className="text-sm font-medium">{option.name}</span>
+                      <span className="text-sm font-semibold">₦{option.price.toLocaleString()}</span>
+                    </div>
+                  </button>
+                )
+              })}
+            </div>
+          </section>
+
+          <section className="space-y-3">
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900">Payment method</h3>
+            </div>
+            <div className="grid gap-2 sm:grid-cols-2">
+              {[
+                { id: 'opay', label: 'OPay' },
+                { id: 'moniepoint', label: 'Moniepoint' },
+                { id: 'bank', label: 'Bank transfer' },
+                { id: 'card', label: 'Card' },
+              ].map((option) => {
+                const isSelected = method === option.id
+                return (
+                  <label
+                    key={option.id}
+                    className={`flex cursor-pointer items-center justify-between rounded-xl border px-3 py-3 text-sm font-medium transition ${
+                      isSelected
+                        ? 'border-neutral-900 bg-neutral-900 text-white'
+                        : 'border-gray-200 bg-gray-50 text-gray-800 hover:border-gray-300 hover:bg-white'
+                    }`}
+                  >
+                    <span>{option.label}</span>
+                    <input
+                      type="radio"
+                      name="pm"
+                      checked={isSelected}
+                      onChange={() => setMethod(option.id as 'opay' | 'moniepoint' | 'bank' | 'card')}
+                      className="h-4 w-4 accent-current"
+                    />
+                  </label>
+                )
+              })}
+            </div>
+          </section>
+
+          <div className="pt-2">
+            <button className="inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-emerald-600 px-4 text-sm font-semibold text-white transition hover:bg-emerald-500 disabled:cursor-not-allowed disabled:opacity-60" type="submit" disabled={submitting || items.length === 0}>{submitting ? 'Preparing payment…' : `Proceed to pay ₦${total.toLocaleString()}`}</button>
           </div>
-          <select className="w-full border px-3 py-2 rounded" defaultValue="Nigeria">
-            <option>Nigeria</option>
-          </select>
 
-          <h3 className="font-semibold mt-4">Delivery Location</h3>
-          <select 
-            className="w-full border px-3 py-2 rounded"
-            value={deliveryLocation}
-            onChange={(e) => setDeliveryLocation(e.target.value)}
-          >
-            {DELIVERY_OPTIONS.map((option) => (
-              <option key={option.id} value={option.id}>
-                {option.name} - ₦{option.price.toLocaleString()}
-              </option>
-            ))}
-          </select>
-
-          <h3 className="font-semibold mt-4">Payment Method</h3>
-          <div className="space-y-2">
-            <label className="block"><input type="radio" name="pm" checked={method === 'opay'} onChange={() => setMethod('opay')} /> OPay</label>
-            <label className="block"><input type="radio" name="pm" checked={method === 'moniepoint'} onChange={() => setMethod('moniepoint')} /> Moniepoint</label>
-            <label className="block"><input type="radio" name="pm" checked={method === 'bank'} onChange={() => setMethod('bank')} /> Bank Transfer</label>
-            <label className="block"><input type="radio" name="pm" checked={method === 'card'} onChange={() => setMethod('card')} /> Card</label>
-          </div>
-
-          <div className="mt-4">
-            <button className="bg-green-600 text-white w-full py-2 rounded hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-60" type="submit" disabled={submitting || items.length === 0}>{submitting ? 'Preparing payment…' : `Proceed to Pay ₦${total.toLocaleString()}`}</button>
-          </div>
-
-          {error && <div role="alert" className="rounded bg-red-50 p-3 text-sm text-red-700">{error}</div>}
-          {status && <div className="text-sm text-gray-700">{status}</div>}
+          {error && <div role="alert" className="rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700">{error}</div>}
+          {status && <div className="rounded-xl border border-gray-200 bg-gray-50 p-3 text-sm text-gray-700">{status}</div>}
         </form>
-        <aside className="border rounded p-4">
-          <h3 className="font-semibold">Order Summary</h3>
-          <div className="mt-4 space-y-3 text-sm">
+
+        <aside className="self-start rounded-[22px] border border-gray-200 bg-white p-4 shadow-sm sm:p-5">
+          <h3 className="text-lg font-semibold text-gray-900">Order summary</h3>
+
+          <div className="mt-4 space-y-4 text-sm">
             {orderLines.map((line) => (
-              <div key={line.productId} className="flex justify-between gap-4">
-                <span>{line.name} x {line.quantity}</span>
-                <span>₦{(line.price * line.quantity).toLocaleString()}</span>
+              <div key={line.productId} className="flex items-start justify-between gap-4 border-b border-gray-100 pb-3 last:border-0 last:pb-0">
+                <div>
+                  <div className="font-medium text-gray-900">{line.name}</div>
+                  <div className="mt-1 text-gray-500">Qty {line.quantity}</div>
+                </div>
+                <div className="font-medium text-gray-900">₦{(line.price * line.quantity).toLocaleString()}</div>
               </div>
             ))}
-            <div className="border-t pt-3">
-              <div className="flex justify-between"><span>Subtotal</span><span>₦{subtotal.toLocaleString()}</span></div>
-              <div className="flex justify-between"><span>Delivery</span><span>₦{deliveryFee.toLocaleString()}</span></div>
-              <div className="flex justify-between font-bold mt-4"><span>Total</span><span>₦{total.toLocaleString()}</span></div>
+
+            <div className="space-y-2 border-t border-gray-200 pt-4 text-sm">
+              <div className="flex items-center justify-between text-gray-600">
+                <span>Subtotal</span>
+                <span>₦{subtotal.toLocaleString()}</span>
+              </div>
+              <div className="flex items-center justify-between text-gray-600">
+                <span>Delivery</span>
+                <span>₦{deliveryFee.toLocaleString()}</span>
+              </div>
+              <div className="flex items-center justify-between pt-2 text-base font-bold text-gray-900">
+                <span>Total</span>
+                <span>₦{total.toLocaleString()}</span>
+              </div>
             </div>
-            <div className="mt-4 text-sm text-gray-600">
-              After initiating payment you will be redirected to the provider for secure payment where applicable.
+
+            <div className="rounded-xl bg-gray-50 p-3 text-sm text-gray-600">
+              Secure payment goes through your selected provider and returns you to the order page after approval.
             </div>
 
             {bankDetails && (
-              <div className="mt-4 border rounded p-3 bg-gray-50">
-                <h4 className="font-semibold">Bank Transfer Instructions</h4>
-                <div className="mt-2">Account name: {bankDetails.account_name}</div>
-                <div>Account number: {bankDetails.account_number}</div>
-                <div>Bank: {bankDetails.bank_name}</div>
-                <div className="mt-2 text-sm text-gray-600">Use reference: {bankDetails.reference}</div>
-                <div className="mt-2 text-sm text-gray-600">Amount: ₦{total.toLocaleString()}</div>
+              <div className="rounded-xl border border-gray-200 bg-gray-50 p-3">
+                <h4 className="text-sm font-semibold text-gray-900">Bank transfer instructions</h4>
+                <div className="mt-2 space-y-1 text-sm text-gray-700">
+                  <div>Account name: {bankDetails.account_name}</div>
+                  <div>Account number: {bankDetails.account_number}</div>
+                  <div>Bank: {bankDetails.bank_name}</div>
+                  <div>Reference: {bankDetails.reference}</div>
+                  <div>Amount: ₦{total.toLocaleString()}</div>
+                </div>
               </div>
             )}
           </div>

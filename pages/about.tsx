@@ -1,13 +1,16 @@
 import { NextPage } from 'next'
+import PageMeta from '../components/PageMeta'
 
 const About: NextPage = () => (
-  <div className="mx-auto max-w-6xl px-4 py-10 md:px-8 lg:px-12">
-    <div className="mb-10 max-w-3xl">
-      <p className="mb-4 text-sm font-medium uppercase tracking-[0.18em] text-gray-500">About us</p>
-      <h1 className="text-3xl font-semibold tracking-tight text-gray-900 md:text-5xl">We create everyday essentials that elevate personal style.</h1>
-    </div>
+  <div>
+    <PageMeta title="About Tochiwears" description="Learn about Tochiwears, our curated accessories, and our commitment to quality and style." canonicalPath="/about" />
+    <div className="mx-auto max-w-6xl px-4 py-10 md:px-8 lg:px-12">
+      <div className="mb-10 max-w-3xl">
+        <p className="mb-4 text-sm font-medium uppercase tracking-[0.18em] text-gray-500">About us</p>
+        <h1 className="text-3xl font-semibold tracking-tight text-gray-900 md:text-5xl">We create everyday essentials that elevate personal style.</h1>
+      </div>
 
-    <div className="space-y-8 text-gray-700">
+      <div className="space-y-8 text-gray-700">
       <p className="text-lg leading-8">
         At Tochiwears, we believe accessories are more than finishing touches — they are expressions of identity, confidence, and taste.
         We curate modern, premium pieces that help people look polished, feel elevated, and move through daily life with intention.
@@ -46,6 +49,7 @@ const About: NextPage = () => (
           Our mission is simple: to make premium accessories accessible, stylish, and easy to shop for. We serve customers who value quality, confidence,
           and a more elevated standard in the way they present themselves every day.
         </p>
+      </div>
       </div>
     </div>
   </div>

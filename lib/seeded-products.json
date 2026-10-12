@@ -1,0 +1,434 @@
+[
+  {
+    "id": "seed-street-canvas-web-belt",
+    "name": "Street Canvas Web Belt",
+    "slug": "street-canvas-web-belt",
+    "price": 4500,
+    "category": "belts",
+    "gender": "unisex",
+    "stock": 25,
+    "rating": 4.4,
+    "description": "A hard-wearing woven strap gives everyday fits a clean utility edge. Finished with a low-profile buckle, it moves easily from cargos to denim.",
+    "newArrival": true,
+    "images": [
+      "/products/street-canvas-web-belt/main.webp"
+    ],
+    "sku": "TW-STREET-CANVAS-WEB-BELT",
+    "sizes": [],
+    "colors": []
+  },
+  {
+    "id": "seed-tactical-quick-release-belt",
+    "name": "Tactical Quick-Release Belt",
+    "slug": "tactical-quick-release-belt",
+    "price": 7000,
+    "category": "belts",
+    "gender": "men",
+    "stock": 20,
+    "rating": 4.6,
+    "description": "Built around a fast-release buckle and a sturdy webbed strap, this belt brings function to street-ready layers. The streamlined hardware keeps the finish sharp.",
+    "newArrival": true,
+    "images": [
+      "/products/tactical-quick-release-belt/main.webp"
+    ],
+    "sku": "TW-TACTICAL-QUICK-RELEASE-BELT",
+    "sizes": [],
+    "colors": []
+  },
+  {
+    "id": "seed-silver-chain-belt",
+    "name": "Silver Chain Belt",
+    "slug": "silver-chain-belt",
+    "price": 8500,
+    "category": "belts",
+    "gender": "unisex",
+    "stock": 15,
+    "rating": 4.3,
+    "description": "A polished chain profile adds a confident metal accent over denim or a relaxed silhouette. Wear it as a statement layer when the fit needs a little more edge.",
+    "newArrival": false,
+    "images": [
+      "/products/silver-chain-belt/main.webp"
+    ],
+    "sku": "TW-SILVER-CHAIN-BELT",
+    "sizes": [],
+    "colors": []
+  },
+  {
+    "id": "seed-oversized-buckle-leather-belt",
+    "name": "Oversized Buckle Leather Belt",
+    "slug": "oversized-buckle-leather-belt",
+    "price": 9500,
+    "category": "belts",
+    "gender": "men",
+    "stock": 18,
+    "rating": 4.5,
+    "description": "A broad leather strap and oversized buckle make this a strong finishing piece for street-tailored looks. The substantial profile keeps its presence without excess detail.",
+    "newArrival": false,
+    "images": [
+      "/products/oversized-buckle-leather-belt/main.webp"
+    ],
+    "sku": "TW-OVERSIZED-BUCKLE-LEATHER-BELT",
+    "sizes": [],
+    "colors": []
+  },
+  {
+    "id": "seed-studded-edge-belt",
+    "name": "Studded Edge Belt",
+    "slug": "studded-edge-belt",
+    "price": 6000,
+    "category": "belts",
+    "gender": "unisex",
+    "stock": 22,
+    "rating": 4.2,
+    "description": "Metal studs trace a bold line across a versatile everyday belt. Pair it with washed denim and clean basics for a subtle punk influence.",
+    "newArrival": false,
+    "images": [
+      "/products/studded-edge-belt/main.webp"
+    ],
+    "sku": "TW-STUDDED-EDGE-BELT",
+    "sizes": [],
+    "colors": []
+  },
+  {
+    "id": "seed-braided-stretch-belt",
+    "name": "Braided Stretch Belt",
+    "slug": "braided-stretch-belt",
+    "price": 5000,
+    "category": "belts",
+    "gender": "women",
+    "stock": 30,
+    "rating": 4.4,
+    "description": "A flexible woven braid adds texture while keeping the fit comfortable through long days. Its understated finish works with denim, skirts, and relaxed tailoring.",
+    "newArrival": false,
+    "images": [
+      "/products/braided-stretch-belt/main.webp"
+    ],
+    "sku": "TW-BRAIDED-STRETCH-BELT",
+    "sizes": [],
+    "colors": []
+  },
+  {
+    "id": "seed-cuban-link-chain",
+    "name": "Cuban Link Chain",
+    "slug": "cuban-link-chain",
+    "price": 18000,
+    "category": "jewelry",
+    "gender": "men",
+    "stock": 12,
+    "rating": 4.8,
+    "description": "Interlocking links bring a heavyweight presence to a classic streetwear staple. Wear it solo for a clean statement or layer it with a longer chain.",
+    "newArrival": true,
+    "images": [
+      "/products/cuban-link-chain/main.webp"
+    ],
+    "sku": "TW-CUBAN-LINK-CHAIN",
+    "sizes": [],
+    "colors": []
+  },
+  {
+    "id": "seed-layered-gold-necklace-set",
+    "name": "Layered Gold Necklace Set",
+    "slug": "layered-gold-necklace-set",
+    "price": 15000,
+    "category": "jewelry",
+    "gender": "women",
+    "stock": 14,
+    "rating": 4.7,
+    "description": "Two coordinated chains create an effortless layered finish without the guesswork. The warm gold tone adds polish to tees, tanks, and evening looks alike.",
+    "newArrival": true,
+    "images": [
+      "/products/layered-gold-necklace-set/main.webp"
+    ],
+    "sku": "TW-LAYERED-GOLD-NECKLACE-SET",
+    "sizes": [],
+    "colors": []
+  },
+  {
+    "id": "seed-stackable-signet-ring-set",
+    "name": "Stackable Signet Ring Set",
+    "slug": "stackable-signet-ring-set",
+    "price": 9000,
+    "category": "jewelry",
+    "gender": "unisex",
+    "stock": 20,
+    "rating": 4.5,
+    "description": "A mix of clean signet shapes gives this set a composed, collected feel. Stack the rings together or split them across your hands for a more relaxed look.",
+    "newArrival": false,
+    "images": [
+      "/products/stackable-signet-ring-set/main.webp"
+    ],
+    "sku": "TW-STACKABLE-SIGNET-RING-SET",
+    "sizes": [],
+    "colors": []
+  },
+  {
+    "id": "seed-chunky-chain-bracelet",
+    "name": "Chunky Chain Bracelet",
+    "slug": "chunky-chain-bracelet",
+    "price": 11000,
+    "category": "jewelry",
+    "gender": "unisex",
+    "stock": 16,
+    "rating": 4.6,
+    "description": "Bold links give the wrist a strong metallic accent with a refined finish. It stands on its own or balances a layered watch-and-chain combination.",
+    "newArrival": false,
+    "images": [
+      "/products/chunky-chain-bracelet/main.webp"
+    ],
+    "sku": "TW-CHUNKY-CHAIN-BRACELET",
+    "sizes": [],
+    "colors": []
+  },
+  {
+    "id": "seed-dog-tag-pendant-necklace",
+    "name": "Dog Tag Pendant Necklace",
+    "slug": "dog-tag-pendant-necklace",
+    "price": 8000,
+    "category": "jewelry",
+    "gender": "men",
+    "stock": 25,
+    "rating": 4.3,
+    "description": "A pared-back tag pendant brings a utilitarian note to an everyday chain. Its easy profile suits open collars, graphic tees, and layered street looks.",
+    "newArrival": false,
+    "images": [
+      "/products/dog-tag-pendant-necklace/main.webp"
+    ],
+    "sku": "TW-DOG-TAG-PENDANT-NECKLACE",
+    "sizes": [],
+    "colors": []
+  },
+  {
+    "id": "seed-hoop-earrings-duo",
+    "name": "Hoop Earrings Duo",
+    "slug": "hoop-earrings-duo",
+    "price": 6500,
+    "category": "jewelry",
+    "gender": "women",
+    "stock": 30,
+    "rating": 4.5,
+    "description": "Two hoop sizes make it easy to shift from understated to statement styling. A polished finish keeps the pair sharp with both casual and dressed-up fits.",
+    "newArrival": false,
+    "images": [
+      "/products/hoop-earrings-duo/main.webp"
+    ],
+    "sku": "TW-HOOP-EARRINGS-DUO",
+    "sizes": [],
+    "colors": []
+  },
+  {
+    "id": "seed-oversized-square-shades",
+    "name": "Oversized Square Shades",
+    "slug": "oversized-square-shades",
+    "price": 10000,
+    "category": "glasses",
+    "gender": "unisex",
+    "stock": 20,
+    "rating": 4.4,
+    "description": "A broad square frame gives these shades a confident, modern profile. Dark lenses and clean lines make them an easy anchor for off-duty outfits.",
+    "newArrival": true,
+    "images": [
+      "/products/oversized-square-shades/main.webp"
+    ],
+    "sku": "TW-OVERSIZED-SQUARE-SHADES",
+    "sizes": [],
+    "colors": []
+  },
+  {
+    "id": "seed-retro-shield-sunglasses",
+    "name": "Retro Shield Sunglasses",
+    "slug": "retro-shield-sunglasses",
+    "price": 11000,
+    "category": "glasses",
+    "gender": "unisex",
+    "stock": 15,
+    "rating": 4.5,
+    "description": "A continuous shield lens brings a throwback sport influence into a sharp contemporary frame. Built for statement styling from the street to weekend plans.",
+    "newArrival": true,
+    "images": [
+      "/products/retro-shield-sunglasses/main.webp"
+    ],
+    "sku": "TW-RETRO-SHIELD-SUNGLASSES",
+    "sizes": [],
+    "colors": []
+  },
+  {
+    "id": "seed-rimless-tinted-shades",
+    "name": "Rimless Tinted Shades",
+    "slug": "rimless-tinted-shades",
+    "price": 9000,
+    "category": "glasses",
+    "gender": "women",
+    "stock": 18,
+    "rating": 4.3,
+    "description": "Tinted lenses and a minimal rimless silhouette keep the look light but unmistakable. A clean choice for adding color without crowding the rest of the fit.",
+    "newArrival": false,
+    "images": [
+      "/products/rimless-tinted-shades/main.webp"
+    ],
+    "sku": "TW-RIMLESS-TINTED-SHADES",
+    "sizes": [],
+    "colors": []
+  },
+  {
+    "id": "seed-classic-wayfarer-frames",
+    "name": "Classic Wayfarer Frames",
+    "slug": "classic-wayfarer-frames",
+    "price": 8500,
+    "category": "glasses",
+    "gender": "men",
+    "stock": 24,
+    "rating": 4.4,
+    "description": "A familiar wayfarer shape gets a crisp everyday finish that works across casual wardrobes. Wear these frames as a dependable accent with tees, denim, or tailoring.",
+    "newArrival": false,
+    "images": [
+      "/products/classic-wayfarer-frames/main.webp"
+    ],
+    "sku": "TW-CLASSIC-WAYFARER-FRAMES",
+    "sizes": [],
+    "colors": []
+  },
+  {
+    "id": "seed-clear-lens-fashion-frames",
+    "name": "Clear-Lens Fashion Frames",
+    "slug": "clear-lens-fashion-frames",
+    "price": 7000,
+    "category": "glasses",
+    "gender": "unisex",
+    "stock": 26,
+    "rating": 4.2,
+    "description": "Transparent styling keeps the frame expressive without overpowering your look. These clear-lens frames bring a considered finishing touch to daily streetwear.",
+    "newArrival": false,
+    "images": [
+      "/products/clear-lens-fashion-frames/main.webp"
+    ],
+    "sku": "TW-CLEAR-LENS-FASHION-FRAMES",
+    "sizes": [],
+    "colors": []
+  },
+  {
+    "id": "seed-blue-light-block-glasses",
+    "name": "Blue-Light Block Glasses",
+    "slug": "blue-light-block-glasses",
+    "price": 9500,
+    "category": "glasses",
+    "gender": "unisex",
+    "stock": 20,
+    "rating": 4.6,
+    "description": "A clean frame pairs everyday versatility with blue-light filtering lenses for screen-heavy routines. The understated profile carries easily from desk hours to after-hours.",
+    "newArrival": false,
+    "images": [
+      "/products/blue-light-block-glasses/main.webp"
+    ],
+    "sku": "TW-BLUE-LIGHT-BLOCK-GLASSES",
+    "sizes": [],
+    "colors": []
+  },
+  {
+    "id": "seed-oversized-chronograph-watch",
+    "name": "Oversized Chronograph Watch",
+    "slug": "oversized-chronograph-watch",
+    "price": 38000,
+    "category": "watches",
+    "gender": "men",
+    "stock": 8,
+    "rating": 4.7,
+    "description": "An oversized case and layered chronograph dial give this watch a strong wrist presence. It brings a precise, technical finish to heavyweight streetwear and smart casual fits.",
+    "newArrival": true,
+    "images": [
+      "/products/oversized-chronograph-watch/main.webp"
+    ],
+    "sku": "TW-OVERSIZED-CHRONOGRAPH-WATCH",
+    "sizes": [],
+    "colors": []
+  },
+  {
+    "id": "seed-minimalist-leather-watch",
+    "name": "Minimalist Leather Watch",
+    "slug": "minimalist-leather-watch",
+    "price": 28000,
+    "category": "watches",
+    "gender": "unisex",
+    "stock": 10,
+    "rating": 4.6,
+    "description": "A pared-back dial meets a smooth leather strap for a quiet, versatile statement. The balanced silhouette works just as well with a relaxed fit as with clean tailoring.",
+    "newArrival": true,
+    "images": [
+      "/products/minimalist-leather-watch/main.webp"
+    ],
+    "sku": "TW-MINIMALIST-LEATHER-WATCH",
+    "sizes": [],
+    "colors": []
+  },
+  {
+    "id": "seed-retro-digital-watch",
+    "name": "Retro Digital Watch",
+    "slug": "retro-digital-watch",
+    "price": 15000,
+    "category": "watches",
+    "gender": "unisex",
+    "stock": 15,
+    "rating": 4.3,
+    "description": "A digital display and throwback case bring a dose of vintage sport style to the wrist. Lightweight and easy to wear, it finishes casual looks with character.",
+    "newArrival": false,
+    "images": [
+      "/products/retro-digital-watch/main.webp"
+    ],
+    "sku": "TW-RETRO-DIGITAL-WATCH",
+    "sizes": [],
+    "colors": []
+  },
+  {
+    "id": "seed-skeleton-automatic-watch",
+    "name": "Skeleton Automatic Watch",
+    "slug": "skeleton-automatic-watch",
+    "price": 55000,
+    "category": "watches",
+    "gender": "men",
+    "stock": 5,
+    "rating": 4.8,
+    "description": "An openworked dial puts the movement-inspired detail front and centre. The mechanical aesthetic gives this statement piece a considered edge for elevated streetwear.",
+    "newArrival": false,
+    "images": [
+      "/products/skeleton-automatic-watch/main.webp"
+    ],
+    "sku": "TW-SKELETON-AUTOMATIC-WATCH",
+    "sizes": [],
+    "colors": []
+  },
+  {
+    "id": "seed-rose-gold-dress-watch",
+    "name": "Rose Gold Dress Watch",
+    "slug": "rose-gold-dress-watch",
+    "price": 32000,
+    "category": "watches",
+    "gender": "women",
+    "stock": 9,
+    "rating": 4.7,
+    "description": "A slim case in a warm rose-gold tone brings understated polish to the wrist. Its clean dial moves naturally from evening outfits to everyday wear.",
+    "newArrival": false,
+    "images": [
+      "/products/rose-gold-dress-watch/main.webp"
+    ],
+    "sku": "TW-ROSE-GOLD-DRESS-WATCH",
+    "sizes": [],
+    "colors": []
+  },
+  {
+    "id": "seed-matte-black-tactical-watch",
+    "name": "Matte Black Tactical Watch",
+    "slug": "matte-black-tactical-watch",
+    "price": 25000,
+    "category": "watches",
+    "gender": "men",
+    "stock": 12,
+    "rating": 4.5,
+    "description": "A matte black finish and purposeful dial deliver a rugged, low-glare look. Designed to hold its own with utility layers, cargos, and everyday essentials.",
+    "newArrival": false,
+    "images": [
+      "/products/matte-black-tactical-watch/main.webp"
+    ],
+    "sku": "TW-MATTE-BLACK-TACTICAL-WATCH",
+    "sizes": [],
+    "colors": []
+  }
+]

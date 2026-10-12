@@ -52,3 +52,7 @@ OpenAPI
 
 Contact
 - If you have questions about payloads or want a sample seed DB, ping the frontend owner.
+
+Newsletter
+- Configure `NEWSLETTER_WEBHOOK_URL` with a trusted server-side endpoint that accepts `POST` JSON `{ email, source }` and returns a 2xx response after recording the subscription.
+- Optionally configure `NEWSLETTER_WEBHOOK_API_KEY`; it is sent as a Bearer token and is never exposed to the browser.

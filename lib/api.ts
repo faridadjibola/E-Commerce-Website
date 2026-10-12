@@ -72,7 +72,7 @@ export async function initiateCard(amount: number, email: string): Promise<Payme
   return fetchJson<PaymentInitResponse>('/api/payments/card/initiate', { method: 'POST', body: JSON.stringify({ amount, email }) })
 }
 
-export default {
+const api = {
   getProducts,
   getProduct,
   registerUser,
@@ -87,3 +87,5 @@ export default {
   initiateBankTransfer,
   initiateCard,
 }
+
+export default api
